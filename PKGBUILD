@@ -1,7 +1,7 @@
 # Maintainer: Kuan-Yen Chou <kuanyenchou at gmail dot com>
 
 pkgname=gllvm-git
-pkgver=1.3.001.r26.g48db30d
+pkgver=1.3.1.r13.g154531b
 pkgrel=1
 pkgdesc="Whole Program LLVM: wllvm ported to go"
 arch=('any')
@@ -27,8 +27,10 @@ pkgver() {
 package() {
     cd "$srcdir/$pkgname"
     export GOPATH="$pkgdir/usr"
-    GO111MODULE=off go get github.com/SRI-CSL/gllvm/cmd/...
+    go install github.com/SRI-CSL/gllvm/cmd/...@latest
     rm -rf "$pkgdir/usr/src"
+    # This is needed in case the `--clean` option is used with makepkg.
+    chmod -R u+w "$pkgdir/usr/pkg/mod"
     install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
